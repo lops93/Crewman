@@ -19,3 +19,7 @@
 ## ER-diagram
 <p align="center"><img src="client/public/images/Crewman_Diagram.png" ></p>
 
+### Technologies utilized in my project<br>
+<img src="https://img.shields.io/badge/Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white"/><br>
+<img src="https://img.shields.io/badge/Vue%20js-35495E?style=for-the-badge&logo=vuedotjs&logoColor=4FC08D"/><br>
+<img src="https://img.shields.io/badge/Quasar-1976D2?style=for-the-badge&logo=quasar&logoColor=white"/><br>
