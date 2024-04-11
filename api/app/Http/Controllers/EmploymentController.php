@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Employment;
 use Illuminate\Http\Request;
 
 class EmploymentController extends Controller
@@ -11,7 +12,8 @@ class EmploymentController extends Controller
      */
     public function index()
     {
-        //
+        $employments = Employment::all();
+        return response()->json($employments);
     }
 
     /**
@@ -33,9 +35,9 @@ class EmploymentController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Employment $employment)
     {
-        //
+        return response()->json($employment);
     }
 
     /**
