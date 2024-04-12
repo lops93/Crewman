@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Assignment;
 use Illuminate\Http\Request;
 
 class AssignmentController extends Controller
@@ -11,7 +12,8 @@ class AssignmentController extends Controller
      */
     public function index()
     {
-        //
+        $assignments = Assignment::all();
+        return response()->json($assignments);
     }
 
     /**
@@ -33,9 +35,9 @@ class AssignmentController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Assignment $assignment)
     {
-        //
+        return response()->json($assignment);
     }
 
     /**
