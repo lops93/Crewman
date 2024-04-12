@@ -19,8 +19,8 @@ class AssignmentFactory extends Factory
     {
         return [
             'employment_id' => null,
-            'employer_id' => null,
-            'title' => $this->faker->jobTitle,
+            'employer_id' => rand(1, 50),
+            'title' => $this->faker->catchPhrase,
             'start_date' => Carbon::now(),
             'end_date' => null
         ];
