@@ -17,6 +17,11 @@ class Employer extends Model
 
     protected $dates = ['deleted_at'];
 
+    public function getCurrentAssignment()
+    {
+        
+    }
+
     public function assignments(): HasMany
     {
         return $this->hasMany(Assignment::class);
