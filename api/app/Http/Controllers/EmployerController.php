@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Employer;
 use Illuminate\Http\Request;
 
 class EmployerController extends Controller
@@ -11,7 +12,8 @@ class EmployerController extends Controller
      */
     public function index()
     {
-        //
+        $employers = Employer::all();
+        return response()->json($employers);
     }
 
     /**
@@ -33,9 +35,9 @@ class EmployerController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Employer $employer)
     {
-        //
+        return response()->json($employer);
     }
 
     /**
