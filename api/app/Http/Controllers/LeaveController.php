@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Leave;
 use Illuminate\Http\Request;
 
 class LeaveController extends Controller
@@ -11,7 +12,8 @@ class LeaveController extends Controller
      */
     public function index()
     {
-        //
+        $leaves = Leave::all();
+        return response()->json($leaves);
     }
 
     /**
@@ -33,9 +35,9 @@ class LeaveController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Leave $leave)
     {
-        //
+        return response()->json($leave);
     }
 
     /**

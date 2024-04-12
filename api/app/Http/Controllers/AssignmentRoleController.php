@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AssignmentRole;
 use Illuminate\Http\Request;
 
 class AssignmentRoleController extends Controller
@@ -11,7 +12,8 @@ class AssignmentRoleController extends Controller
      */
     public function index()
     {
-        //
+        $assignmentRoles = AssignmentRole::all();
+        return response()->json($assignmentRoles);
     }
 
     /**
@@ -33,9 +35,9 @@ class AssignmentRoleController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(AssignmentRole $assignmentRole)
     {
-        //
+        return response()->json($assignmentRole);
     }
 
     /**
