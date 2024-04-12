@@ -22,20 +22,14 @@ class EmploymentSeeder extends Seeder
                 'employee_id' => $employee->id,
                 'start_date' => Carbon::now()->subYears(2)->subDays(rand(1, 365)) ,
                 'end_date' => Carbon::now()->subYears(1)->addDays(rand(1, 365)),
-            ])
-            ->each(function ($employment) {
-                //create assignments
-            });
+            ]);
 
             // Create current employment for the employee
             Employment::factory()->create([
                 'employee_id' => $employee->id,
                 'start_date' => Carbon::now(),
                 'end_date' => null,
-            ])
-            ->each(function ($employment) {
-                //create assignments
-            });
+            ]);
 
             // Create future employment for the employee
             Employment::factory()->create([
