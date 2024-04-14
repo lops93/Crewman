@@ -6,18 +6,33 @@
 - clone the project
 
 ## api folder
-- composer create-project command
+install dependencies with the command
+> composer create-project
 - setup the .env file
-- ./vendor/bin/sail up command to containerize the project
-- ./vendor/bin/sail artisan migrate --seed command to run migrations and seeders
+
+- containerize the project
+>./vendor/bin/sail up
+- run migrations and seeders
+>./vendor/bin/sail artisan migrate --seed 
 
 
 ## client folder
-- npm install
-- quasar dev
+- install dependencies
+> npm install
+- run client
+> quasar dev
 
 ## ER-diagram
 <p align="center"><img src="client/public/images/Crewman_Diagram.png" ></p>
+
+## testing
+- setup the .env.testing file
+- generate keys (if necessary) with the command 
+> php artisan key:generate --env=testing
+- run test migrations 
+> ./vendor/bin/sail artisan migrate --env=testing
+- run tests with the command 
+> ./vendor/bin/pest
 
 ### Technologies utilized in my project<br>
 <img src="https://img.shields.io/badge/Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white"/><br>
