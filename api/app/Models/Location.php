@@ -16,6 +16,6 @@ class Location extends Model
 
     public function assignments(): BelongsToMany
     {
-        return $this->belongsToMany(Assignment::class);
+        return $this->belongsToMany(Assignment::class, 'assignment_location', 'location_id', 'assignment_id');
     }
 }

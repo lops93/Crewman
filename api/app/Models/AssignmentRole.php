@@ -22,8 +22,8 @@ class AssignmentRole extends Model
         return $this->belongsTo(Assignment::class);
     }
 
-    public function assignmentRoleType(): HasOne
+    public function assignmentRoleType(): BelongsTo
     {
-        return $this->hasOne(AssignmentRoleType::class);
+        return $this->belongsTo(AssignmentRoleType::class, 'type_id');
     }
 }
