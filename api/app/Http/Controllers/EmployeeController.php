@@ -21,6 +21,14 @@ class EmployeeController extends Controller
 
     public function show(Employee $employee)
     {
+        $employee = $employee->employments()
+        ->with('assignments',
+         'assignments.employer',
+         'assignments.locations',
+         'assignments.assignmentRoles',
+         'assignments.assignmentRoles.assignmentRoleType',
+         'assignments.leaves')->get();
+
         return response()->json($employee);
     }
 
