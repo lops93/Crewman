@@ -30,6 +30,11 @@
       </div>
         </div>
       </template>
+      <template v-slot:body-cell-actions="props">
+          <q-td :props="props">
+            <q-btn flat round color="negative" icon="remove_circle" size="sm" dense @click='deleteEmployee(props.row.id)' />
+          </q-td>
+        </template>
       </q-table>
       <div class="row justify-center q-mt-md">
       <q-pagination
@@ -47,16 +52,19 @@
 
 <script>
 import { onMounted, ref, computed } from 'vue'
-import { api } from 'boot/axios'
+import EmployeesService from 'src/services/employees'
+import { useQuasar } from 'quasar'
 
 export default {
   name: 'IndexPage',
   setup () {
     const employees = ref([])
+    const { list, destroy } = EmployeesService()
     const columns = [
       { name: 'identification_number', align: 'left', label: 'ID', field: 'identification_number', sortable: true },
       { name: 'first_name', align: 'left', label: 'First Name', field: 'first_name', sortable: true },
-      { name: 'last_name', align: 'left', label: 'Last Name', field: 'last_name', sortable: true }
+      { name: 'last_name', align: 'left', label: 'Last Name', field: 'last_name', sortable: true },
+      { name: 'actions', align: 'left', label: '', field: 'actions', sortable: false }
     ]
     const pagination = ref({
       sortBy: 'desc',
@@ -64,25 +72,49 @@ export default {
       page: 2,
       rowsPerPage: 9
     })
+    const $q = useQuasar()
     onMounted(() => {
-      getPosts()
+      getEmployees()
     })
 
-    const getPosts = async () => {
+    const getEmployees = async () => {
       try {
-        const { data } = await api.get('employees')
+        const data = await list()
         employees.value = data
       } catch (error) {
         console.log(error)
       }
     }
+
+    const deleteEmployee = async (id) => {
+      try {
+        $q.dialog({
+          title: '<p class="text-primary">Confirmation Required</p>',
+          message: '<p class="text-primary">Are you sure you want to delete this record?</p>',
+          cancel: true,
+          persistent: true,
+          html: true,
+          ok: {
+            color: 'primary'
+          }
+        }).onOk(async () => {
+          await destroy(id)
+          $q.notify({ color: 'positive', message: 'Record deleted successfully', icon: 'done', position: 'top' })
+          await getEmployees()
+        })
+      } catch (error) {
+        $q.notify({ color: 'warning', message: 'Error deleting record', icon: 'warning', position: 'top' })
+      }
+    }
+
     const pagesNumber = computed(() => employees.value.length / pagination.value.rowsPerPage)
 
     return {
       employees,
       columns,
       pagination,
-      pagesNumber
+      pagesNumber,
+      deleteEmployee
     }
   }
 }
