@@ -30,6 +30,13 @@
       </div>
         </div>
       </template>
+      <template v-slot:body-cell-first_name="props">
+          <q-td :props="props" class="q-gutter-sm">
+            <router-link :to="{ name: 'ShowEmployee', params: { id: props.row.id } }" >
+              {{ props.row.first_name }}
+            </router-link>
+          </q-td>
+        </template>
       <template v-slot:body-cell-actions="props">
           <q-td :props="props">
             <q-btn flat round color="negative" icon="remove_circle" size="sm" dense @click='deleteEmployee(props.row.id)' />
@@ -61,9 +68,9 @@ export default {
     const employees = ref([])
     const { list, destroy } = EmployeesService()
     const columns = [
-      { name: 'identification_number', align: 'left', label: 'ID', field: 'identification_number', sortable: true },
       { name: 'first_name', align: 'left', label: 'First Name', field: 'first_name', sortable: true },
       { name: 'last_name', align: 'left', label: 'Last Name', field: 'last_name', sortable: true },
+      { name: 'identification_number', align: 'left', label: 'ID', field: 'identification_number', sortable: true },
       { name: 'actions', align: 'left', label: '', field: 'actions', sortable: false }
     ]
     const pagination = ref({
