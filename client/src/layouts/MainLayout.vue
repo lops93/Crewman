@@ -23,18 +23,20 @@
       v-model="leftDrawerOpen"
       show-if-above
       bordered
+      class="bg-primary"
     >
       <q-list>
         <q-item-label
           header
         >
-          logo
+
         </q-item-label>
 
         <EssentialLink
           v-for="link in linksList"
           :key="link.title"
           v-bind="link"
+          class="text-white"
         />
       </q-list>
     </q-drawer>

@@ -42,11 +42,21 @@ export default function useEmployeesApi (url) {
     }
   }
 
+  const latest = async () => {
+    try {
+      const { data } = await api.get(url)
+      return (data)
+    } catch (error) {
+      throw new Error(error)
+    }
+  }
+
   return {
     list,
     getById,
     post,
     update,
-    destroy
+    destroy,
+    latest
   }
 }

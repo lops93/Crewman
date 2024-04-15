@@ -21,3 +21,5 @@ Route::resource('assignments', AssignmentController::class);
 Route::resource('assignments/roles', AssignmentRoleController::class);
 Route::resource('locations', LocationController::class);
 Route::resource('leaves', LeaveController::class);
+
+Route::get('/employee/last', [EmployeeController::class, 'mostRecent']);
