@@ -21,13 +21,14 @@ class EmployeeController extends Controller
 
     public function show(Employee $employee)
     {
-        $employee = $employee->employments()
-        ->with('assignments',
-         'assignments.employer',
-         'assignments.locations',
-         'assignments.assignmentRoles',
-         'assignments.assignmentRoles.assignmentRoleType',
-         'assignments.leaves')->get();
+        $employee = $employee->load([
+            'employments.assignments',
+            'employments.assignments.employer',
+            'employments.assignments.locations',
+            'employments.assignments.assignmentRoles',
+            'employments.assignments.assignmentRoles.assignmentRoleType',
+            'employments.assignments.leaves'
+        ]);
 
         return response()->json($employee);
     }
@@ -41,5 +42,10 @@ class EmployeeController extends Controller
     {
         $employee->delete();
         return response()->json("Record deleted successfully");
+    }
+
+    public function mostRecent()
+    {
+        return Employee::latest()->first();;
     }
 }

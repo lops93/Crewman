@@ -44,15 +44,15 @@
         </template>
       </q-table>
       <div class="row justify-center q-mt-md">
-      <q-pagination
-        v-model="pagination.page"
-        color="primary"
-        :max="pagesNumber"
-        :max-pages="6"
-        size="md"
-        direction-links
-      />
-    </div>
+        <q-pagination
+          v-model="pagination.page"
+          color="primary"
+          :max="pagesNumber"
+          :max-pages="6"
+          size="md"
+          direction-links
+        />
+      </div>
     </div>
   </q-page>
 </template>
