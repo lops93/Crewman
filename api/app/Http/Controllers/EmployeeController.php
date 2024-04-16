@@ -44,7 +44,7 @@ class EmployeeController extends Controller
         return response()->json("Record deleted successfully");
     }
 
-    public function mostRecent()
+    public function getLastEmployee()
     {
         return Employee::latest()->first();;
     }
