@@ -8,17 +8,9 @@
           color="primary"
         />
       </template>
-
-      <q-breadcrumbs-el label="Home" icon="home" />
+      <q-breadcrumbs-el label="Home" icon="home" :to="{ name: 'home'}"/>
       <q-breadcrumbs-el label="Employee" icon="person" />
     </q-breadcrumbs>
-    <div class="absolute justify-center" v-show="isLoading">
-      <q-spinner
-        color="primary"
-        size="6em"
-        :thickness="10"
-      />
-    </div>
     <div class="employee-details">
       <q-item clickable v-ripple>
         <q-item-section side>
@@ -26,7 +18,7 @@
         </q-item-section>
         <q-item-section>
           <q-item-label><h3 class="q-mb-sm">{{ field.first_name }} {{ field.last_name }}</h3></q-item-label>
-          <q-item-label caption>{{ field.identification_number }}</q-item-label>
+          <q-item-label class="text-subtitle2">{{ field.identification_number }}</q-item-label>
         </q-item-section>
         <q-item-section side>
           Created at: <b>{{ formatTime(field.created_at) }}</b>
@@ -42,6 +34,7 @@
           :columns="columns"
           row-key="name"
           hide-header
+          no-data-label="loading..."
           :rows-per-page-options="rowsPerPageOptions"
         >
           <template v-slot:item="props">
@@ -49,6 +42,10 @@
               <q-card flat bordered>
                 <q-card-section class="text-center">
                   <strong>{{ props.row.title }}</strong>
+                  <q-item-label caption>
+                    {{ formatDate(props.row.start_date) }} - {{ formatDate(props.row.end_date) }}
+                  </q-item-label>
+                  <q-badge :color="getBadgeColor(props.row.employment_status)" :label="props.row.employment_status" />
                 </q-card-section>
                 <q-separator />
                 <q-card-section class="flex flex-center">
@@ -57,6 +54,9 @@
                     <q-item v-for="assignment in props.row.assignments" :key="assignment.id">
                       <q-item-section>
                         <q-item-label >{{ assignment.title }}</q-item-label>
+                        <q-item-label caption>
+                          {{ formatDate(assignment.start_date) }} - {{ formatDate(assignment.end_date) }}
+                        </q-item-label>
                         <q-separator class="q-mt-sm" />
                         <text-caption class="text-weight-light q-mt-sm">employer: </text-caption>
                         <q-item-label>{{ assignment.employer.name }} </q-item-label>
@@ -69,28 +69,23 @@
                             <q-icon name="task" />
                             {{ role.title }} <br>
                             <q-badge outline color="deep-orange-10" :label="role.assignment_role_type.title" />
+                            <q-item-label caption>
+                              {{ formatDate(role.start_date) }} - {{ formatDate(role.end_date) }}
+                            </q-item-label>
                         </q-item-label>
                         <text-caption class="text-weight-light q-mt-sm">Leaves: </text-caption>
                         <q-item-label v-for="leave in assignment.leaves" :key="leave.id">
                           <q-icon name="calendar_month" />
-                          {{ leave.type }} <br>
+                          {{ leave.type }}
+                          <q-item-label caption class="q-mt-xs">
+                            {{ formatDate(leave.start_date) }} - {{ formatDate(leave.end_date) }}
+                          </q-item-label>
                         </q-item-label>
                       </q-item-section>
                     </q-item>
                   </q-list>
                 </q-card-section>
               </q-card>
-            </div>
-          </template>
-          <template v-slot:no-data="{}">
-            <div class="full-width row flex-center text-accent q-gutter-xl">
-              <div>
-                <q-spinner-ios
-                  color="primary"
-                  size="2em"
-                />
-                <q-tooltip :offset="[0, 8]">QSpinnerIos</q-tooltip>
-              </div>
             </div>
           </template>
         </q-table>
@@ -130,10 +125,28 @@ export default {
 
     const getEmployee = async (id) => {
       try {
+        $q.loading.show({
+          delay: 400
+        })
         const response = await getById(id)
         field.value = response
+        $q.loading.hide()
       } catch {
+        $q.loading.hide()
         $q.notify({ color: 'warning', message: 'Error retrieving data ', icon: 'warning', position: 'top' })
+      }
+    }
+
+    const getBadgeColor = (status) => {
+      switch (status) {
+        case 'Past Employment':
+          return 'red-4'
+        case 'Current Employment':
+          return 'green-4'
+        case 'Future Employment':
+          return 'indigo-4'
+        default:
+          return 'gray'
       }
     }
 
@@ -150,7 +163,8 @@ export default {
     return {
       field,
       formatDate,
-      formatTime
+      formatTime,
+      getBadgeColor
     }
   }
 }
@@ -158,7 +172,7 @@ export default {
 
 <style lang="scss" scoped>
   .q-card {
-    height: 500px; /* Set a fixed height for the cards */
-    overflow: hidden; /* Hide overflowing content */
+    height: 550px;
+    overflow: hidden;
   }
 </style>

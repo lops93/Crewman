@@ -17,10 +17,17 @@ class Employee extends Model
         'identification_number',
     ];
 
+    protected $appends = ['is_active'];
+    
     protected $dates = ['deleted_at'];
 
     public function employments(): HasMany
     {
         return $this->hasMany(Employment::class);
+    }
+
+    public function getIsActiveAttribute(): bool
+    {
+        return $this->employments()->exists();
     }
 }
