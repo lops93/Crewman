@@ -12,6 +12,13 @@
       <q-breadcrumbs-el label="Home" icon="home" />
       <q-breadcrumbs-el label="Employee" icon="person" />
     </q-breadcrumbs>
+    <div class="absolute justify-center" v-show="isLoading">
+      <q-spinner
+        color="primary"
+        size="6em"
+        :thickness="10"
+      />
+    </div>
     <div class="employee-details">
       <q-item clickable v-ripple>
         <q-item-section side>
@@ -35,17 +42,8 @@
           :columns="columns"
           row-key="name"
           hide-header
-          v-model:pagination="pagination"
           :rows-per-page-options="rowsPerPageOptions"
         >
-          <template v-slot:top-right>
-            <q-input borderless dense debounce="300" v-model="filter" placeholder="Search">
-              <template v-slot:append>
-                <q-icon name="search" />
-              </template>
-            </q-input>
-          </template>
-
           <template v-slot:item="props">
             <div class="q-pa-xs col-xs-12 col-sm-6 col-md-4">
               <q-card flat bordered>
@@ -82,6 +80,17 @@
                   </q-list>
                 </q-card-section>
               </q-card>
+            </div>
+          </template>
+          <template v-slot:no-data="{}">
+            <div class="full-width row flex-center text-accent q-gutter-xl">
+              <div>
+                <q-spinner-ios
+                  color="primary"
+                  size="2em"
+                />
+                <q-tooltip :offset="[0, 8]">QSpinnerIos</q-tooltip>
+              </div>
             </div>
           </template>
         </q-table>
