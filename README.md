@@ -9,9 +9,13 @@
 install dependencies with the command
 > composer create-project
 - setup the .env file
+>>DB_CONNECTION=mysql<br>
+>>DB_HOST=mysql<br>
+>>DB_PORT=3306<br>
+>>DB_DATABASE=crewman<br>
 
 - containerize the project
->./vendor/bin/sail up
+>./vendor/bin/sail up -d
 - run migrations and seeders
 >./vendor/bin/sail artisan migrate --seed 
 

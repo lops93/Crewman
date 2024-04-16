@@ -15,7 +15,10 @@
           Crewman
         </q-toolbar-title>
 
-        <div>options</div>
+        <q-icon
+        size="md"
+        name="account_circle"
+      />
       </q-toolbar>
     </q-header>
 

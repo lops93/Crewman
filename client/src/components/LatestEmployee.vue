@@ -14,21 +14,27 @@
 <script>
 import { onMounted, ref } from 'vue'
 import { api } from 'boot/axios'
+import { useQuasar } from 'quasar'
 
 export default {
   name: 'LatestEmployee',
   setup () {
     const employee = ref([])
-
+    const $q = useQuasar()
     onMounted(() => {
       getLatestEmployee()
     })
 
     const getLatestEmployee = async () => {
       try {
+        $q.loading.show({
+          delay: 400
+        })
         const { data } = await api.get('employee/last')
         employee.value = data
+        $q.loading.hide()
       } catch (error) {
+        $q.loading.hide()
         console.log(error)
       }
     }
