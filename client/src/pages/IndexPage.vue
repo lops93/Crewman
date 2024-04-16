@@ -1,7 +1,8 @@
 <template>
-  <q-page padding="">
+  <q-page padding>
     <q-breadcrumbs-el label="Home" icon="home" class="text-primary"/>
     <div class="q-pa-md">
+      <LatestEmployee />
       <q-table
         title="Employees"
         :rows="employees"
@@ -9,8 +10,6 @@
         :filter="filter"
         row-key="name"
         card-class="bg-blue-grey-1 text-blue-grey-9"
-        v-model:pagination="pagination"
-        hide-pagination
       >
       <template v-slot:top-right>
         <q-input borderless dense debounce="300" v-model="filter" placeholder="Search">
@@ -43,16 +42,6 @@
           </q-td>
         </template>
       </q-table>
-      <div class="row justify-center q-mt-md">
-        <q-pagination
-          v-model="pagination.page"
-          color="primary"
-          :max="pagesNumber"
-          :max-pages="6"
-          size="md"
-          direction-links
-        />
-      </div>
     </div>
   </q-page>
 </template>
@@ -61,9 +50,13 @@
 import { onMounted, ref, computed } from 'vue'
 import EmployeesService from 'src/services/employees'
 import { useQuasar } from 'quasar'
+import LatestEmployee from 'src/components/LatestEmployee.vue'
 
 export default {
   name: 'IndexPage',
+  components: {
+    LatestEmployee
+  },
   setup () {
     const employees = ref([])
     const { list, destroy } = EmployeesService()
@@ -121,6 +114,7 @@ export default {
       columns,
       pagination,
       pagesNumber,
+      filter: ref(''),
       deleteEmployee
     }
   }
