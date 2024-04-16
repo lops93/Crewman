@@ -8,6 +8,7 @@
         :rows="employees"
         :columns="columns"
         :filter="filter"
+        no-data-label="loading..."
         row-key="name"
         card-class="bg-blue-grey-1 text-blue-grey-9"
       >
@@ -18,22 +19,20 @@
           </template>
         </q-input>
       </template>
-      <template v-slot:no-data="{}">
-        <div class="full-width row flex-center text-accent q-gutter-sm">
-          <div>
-        <q-spinner-ios
-          color="primary"
-          size="2em"
-        />
-        <q-tooltip :offset="[0, 8]">QSpinnerIos</q-tooltip>
-      </div>
-        </div>
-      </template>
       <template v-slot:body-cell-first_name="props">
           <q-td :props="props" class="q-gutter-sm">
-            <router-link :to="{ name: 'ShowEmployee', params: { id: props.row.id } }" >
+            <router-link
+            class="text-primary text-weight-bold"
+            :to="{ name: 'ShowEmployee', params: { id: props.row.id } }" >
               {{ props.row.first_name }}
             </router-link>
+          </q-td>
+        </template>
+        <template v-slot:body-cell-is_active="props">
+          <q-td :props="props" class="q-gutter-sm">
+            <q-badge :color="props.row.is_active ? 'green' : 'red'">
+              {{ props.row.is_active ? 'Active' : 'Inactive' }}
+            </q-badge>
           </q-td>
         </template>
       <template v-slot:body-cell-actions="props">
@@ -64,6 +63,7 @@ export default {
       { name: 'first_name', align: 'left', label: 'First Name', field: 'first_name', sortable: true },
       { name: 'last_name', align: 'left', label: 'Last Name', field: 'last_name', sortable: true },
       { name: 'identification_number', align: 'left', label: 'ID', field: 'identification_number', sortable: true },
+      { name: 'is_active', align: 'left', label: 'Status', field: 'is_active', sortable: true },
       { name: 'actions', align: 'left', label: '', field: 'actions', sortable: false }
     ]
     const pagination = ref({
@@ -98,7 +98,11 @@ export default {
             color: 'primary'
           }
         }).onOk(async () => {
+          $q.loading.show({
+            delay: 400
+          })
           await destroy(id)
+          $q.loading.hide()
           $q.notify({ color: 'positive', message: 'Record deleted successfully', icon: 'done', position: 'top' })
           await getEmployees()
         })
