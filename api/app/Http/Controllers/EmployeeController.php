@@ -15,7 +15,13 @@ class EmployeeController extends Controller
 
     public function store(EmployeeRequest $request)
     {
-        Employee::create($request->validated());
+        $request->validated();
+        $employee = new Employee();
+
+        $employee->first_name = $request->first_name;
+        $employee->last_name = $request->last_name;
+        $employee->identification_number = $request->identification_number;
+        $employee->save();
         return response()->json("Record created successfully");
     }
 
