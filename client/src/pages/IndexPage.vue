@@ -13,6 +13,7 @@
         card-class="bg-blue-grey-1 text-blue-grey-9"
       >
       <template v-slot:top-right>
+        <q-btn outline color="primary" label="Add Employee" class="q-mr-md" :to="{ name: 'EmployeeForm' }" />
         <q-input borderless dense debounce="300" v-model="filter" placeholder="Search">
           <template v-slot:append>
             <q-icon name="search" />
@@ -37,6 +38,7 @@
         </template>
       <template v-slot:body-cell-actions="props">
           <q-td :props="props">
+            <q-btn flat round color="primary" icon="edit" dense @click='editEmployee(props.row.id)' />
             <q-btn flat round color="negative" icon="remove_circle" size="sm" dense @click='deleteEmployee(props.row.id)' />
           </q-td>
         </template>
@@ -50,6 +52,7 @@ import { onMounted, ref, computed } from 'vue'
 import EmployeesService from 'src/services/employees'
 import { useQuasar } from 'quasar'
 import LatestEmployee from 'src/components/LatestEmployee.vue'
+import { useRouter } from 'vue-router'
 
 export default {
   name: 'IndexPage',
@@ -59,6 +62,7 @@ export default {
   setup () {
     const employees = ref([])
     const { list, destroy } = EmployeesService()
+    const router = useRouter()
     const columns = [
       { name: 'first_name', align: 'left', label: 'First Name', field: 'first_name', sortable: true },
       { name: 'last_name', align: 'left', label: 'Last Name', field: 'last_name', sortable: true },
@@ -104,11 +108,15 @@ export default {
           await destroy(id)
           $q.loading.hide()
           $q.notify({ color: 'positive', message: 'Record deleted successfully', icon: 'done', position: 'top' })
-          await getEmployees()
+          window.location.reload()
         })
       } catch (error) {
         $q.notify({ color: 'warning', message: 'Error deleting record', icon: 'warning', position: 'top' })
       }
+    }
+
+    const editEmployee = async (id) => {
+      router.push({ name: 'EmployeeForm', params: { id } })
     }
 
     const pagesNumber = computed(() => employees.value.length / pagination.value.rowsPerPage)
@@ -119,7 +127,8 @@ export default {
       pagination,
       pagesNumber,
       filter: ref(''),
-      deleteEmployee
+      deleteEmployee,
+      editEmployee
     }
   }
 }
